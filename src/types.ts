@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface SearchProps {
   onSearchChange: (newSearch: string) => void;
   search: string;
@@ -20,4 +22,12 @@ export interface AppState {
 
 export interface CardsProps {
   data: Movie[];
+}
+
+export interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+export interface ErrorBoundaryProps {
+  children: ReactNode;
 }

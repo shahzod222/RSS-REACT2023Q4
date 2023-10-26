@@ -2,6 +2,7 @@ import React from 'react';
 import { AppProps, AppState } from './types';
 import Search from './components/search';
 import Cards from './components/card';
+import { ErrorBoundary } from './errorboundary';
 
 export default class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
@@ -44,16 +45,22 @@ export default class App extends React.Component<AppProps, AppState> {
     this.getData();
   };
 
+  handleThrowError = () => {
+    console.log('Throwing an error');
+    throw new Error('This is a test error');
+  };
+
   render() {
     return (
-      <div>
+      <ErrorBoundary>
         <Search
           search={this.state.search}
           onSearchChange={this.handleSearchChange}
           onSearchClick={this.handleSearchClick}
         />
+        <button onClick={this.handleThrowError}>Throw an Error</button>
         <Cards data={this.state.data} />
-      </div>
+      </ErrorBoundary>
     );
   }
 }
