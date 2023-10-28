@@ -1,18 +1,31 @@
-import React, { Component } from 'react';
-import { ErrorBoundaryState, ErrorBoundaryProps } from './types';
+import React from 'react';
+import { ErrorBoundaryState, DefaultProps } from './types';
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
+export class ErrorBoundary extends React.Component<DefaultProps, ErrorBoundaryState> {
+  constructor(props: DefaultProps) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: '' };
   }
 
-  componentDidCatch() {
-    console.error('error boundary did catch error');
-    this.setState({ hasError: true });
+  componentDidCatch(error: Error) {
+    this.setState({ hasError: true, error: error.toString() });
+    console.error('Error caught by ErrorBoundary:', error);
   }
 
   render() {
-    return <>{this.state.hasError ? <h1>404</h1> : <>{this.props.children}</>}</>;
+    if (this.state.hasError) {
+      return (
+        <>
+          <h4 className="text-danger">{this.state.error}</h4>
+          <h4>
+            <a className="text-dark" href="">
+              Reload page
+            </a>
+          </h4>
+        </>
+      );
+    }
+
+    return this.props.children;
   }
 }

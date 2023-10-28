@@ -1,11 +1,11 @@
 import React from 'react';
-import { AppProps, AppState } from './types';
+import { DefaultProps, AppState } from './types';
 import Search from './components/search';
 import Cards from './components/card';
 import { ErrorBoundary } from './errorboundary';
 
-export default class App extends React.Component<AppProps, AppState> {
-  constructor(props: AppProps) {
+export default class App extends React.Component<DefaultProps, AppState> {
+  constructor(props: DefaultProps) {
     super(props);
     this.state = {
       search: localStorage.getItem('search') || '',
@@ -45,21 +45,18 @@ export default class App extends React.Component<AppProps, AppState> {
     this.getData();
   };
 
-  handleThrowError = () => {
-    console.log('Throwing an error');
-    throw new Error('This is a test error');
-  };
-
   render() {
     return (
       <ErrorBoundary>
-        <Search
-          search={this.state.search}
-          onSearchChange={this.handleSearchChange}
-          onSearchClick={this.handleSearchClick}
-        />
-        <button onClick={this.handleThrowError}>Throw an Error</button>
-        <Cards data={this.state.data} />
+        <div className="bg-light">
+          <Search
+            search={this.state.search}
+            onSearchChange={this.handleSearchChange}
+            onSearchClick={this.handleSearchClick}
+          />
+
+          <Cards data={this.state.data} />
+        </div>
       </ErrorBoundary>
     );
   }

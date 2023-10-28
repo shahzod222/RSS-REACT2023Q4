@@ -6,7 +6,9 @@ export interface SearchProps {
   onSearchClick: () => void;
 }
 
-export interface AppProps {}
+export interface DefaultProps {
+  children?: ReactNode;
+}
 
 export interface Movie {
   title: string;
@@ -26,8 +28,9 @@ export interface CardsProps {
 
 export interface ErrorBoundaryState {
   hasError: boolean;
+  error: string;
 }
 
-export interface ErrorBoundaryProps {
-  children: ReactNode;
+export interface ErrorButtonState {
+  hasError: boolean;
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { SearchProps } from '../types';
+import { ErrorButton } from './errorbutton';
 
 export default class Search extends React.Component<SearchProps> {
   constructor(props: SearchProps) {
@@ -13,21 +14,22 @@ export default class Search extends React.Component<SearchProps> {
 
   render() {
     return (
-      <header className="bg-dark my-4">
-        <nav className="navbar bg-transparent">
+      <header>
+        <nav className="my-4 navbar">
           <div className="container-fluid">
             <div className="d-flex w-100 justify-content-center" role="search">
               <input
-                className="form-control me-2 w-75 "
+                className="form-control w-75 "
                 type="search"
                 placeholder="Search..."
                 aria-label="Search"
                 onChange={this.handleInputChange}
                 value={this.props.search}
               />
-              <button className="btn btn-outline-light" onClick={this.props.onSearchClick}>
+              <button className="btn btn-outline-dark mx-3" onClick={this.props.onSearchClick}>
                 Search
               </button>
+              <ErrorButton />
             </div>
           </div>
         </nav>
