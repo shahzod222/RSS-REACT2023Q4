@@ -1,29 +1,19 @@
-import React from 'react';
-import { DefaultProps, ErrorButtonState } from '../types';
+import { useState } from 'react';
 
-export class ErrorButton extends React.Component<DefaultProps, ErrorButtonState> {
-  constructor(props: DefaultProps) {
-    super(props);
-    this.state = {
-      hasError: false,
-    };
+export function ErrorButton() {
+  const [hasError, setHasError] = useState(false);
 
-    this.handleClick = this.handleClick.bind(this);
+  const handleClick = () => {
+    setHasError(true);
+  };
+
+  if (hasError) {
+    throw new Error('This is a test error');
   }
 
-  handleClick() {
-    this.setState({ hasError: true });
-  }
-
-  render() {
-    if (this.state.hasError) {
-      throw new Error('This is test Error');
-    }
-
-    return (
-      <button className="btn btn-outline-danger" onClick={this.handleClick}>
-        Throw an error
-      </button>
-    );
-  }
+  return (
+    <button className="btn btn-outline-danger" onClick={handleClick}>
+      Throw an error
+    </button>
+  );
 }
