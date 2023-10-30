@@ -17,11 +17,6 @@ export interface Movie {
   id: number;
 }
 
-export interface AppState {
-  search: string;
-  data: Movie[];
-}
-
 export interface CardsProps {
   data: Movie[];
 }
@@ -33,4 +28,10 @@ export interface ErrorBoundaryState {
 
 export interface ErrorButtonState {
   hasError: boolean;
+}
+
+export interface PaginationProps {
+  page: number;
+  lastPage: number;
+  setPage: (page: number) => void;
 }

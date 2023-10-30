@@ -14,7 +14,8 @@
     "husky": "^8.0.3",
     "preact": "^10.16.0",
     "prettier": "^3.0.3",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-router-dom": "^6.17.0"
   },
   "husky": {
     "hooks": {
