@@ -35,6 +35,9 @@ export function App() {
       .then((data) => {
         setLastPage(data.total_pages);
         setData(data.results);
+        if (data.results.length === 0) {
+          navigate('/404');
+        }
       });
   };
 
