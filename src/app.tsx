@@ -1,21 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Search from './components/search';
 import { Cards } from './components/card';
 import { ErrorBoundary } from './errorboundary';
 import { Pagination } from './components/pagination';
 
 export function App() {
-  const navigate = useNavigate();
   const { pageNumber } = useParams();
   const [search, setSearch] = useState(localStorage.getItem('search') || '');
   const [data, setData] = useState([]);
   const [page, setPage] = useState(Number(pageNumber));
   const [lastPage, setLastPage] = useState(0);
-
-  useEffect(() => {
-    navigate('/page/1');
-  }, [navigate]);
 
   useEffect(() => {
     setData([]);
