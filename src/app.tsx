@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Search from './components/search';
 import { Cards } from './components/card';
 import { ErrorBoundary } from './errorboundary';
@@ -7,6 +7,7 @@ import { Pagination } from './components/pagination';
 
 export function App() {
   const { pageNumber } = useParams();
+  const navigate = useNavigate();
   const [search, setSearch] = useState(localStorage.getItem('search') || '');
   const [data, setData] = useState([]);
   const [page, setPage] = useState(Number(pageNumber));
@@ -45,6 +46,7 @@ export function App() {
     setData([]);
     getData();
     setPage(1);
+    navigate('/page/1');
   };
 
   const changePage = (newPage: number) => {
