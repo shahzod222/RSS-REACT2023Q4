@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Search from './components/search';
 import { Cards } from './components/card';
 import { ErrorBoundary } from './errorboundary';
 import { Pagination } from './components/pagination';
 
 export function App() {
+  const navigate = useNavigate();
+  const { pageNumber } = useParams();
   const [search, setSearch] = useState(localStorage.getItem('search') || '');
   const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(Number(pageNumber));
   const [lastPage, setLastPage] = useState(0);
+
+  useEffect(() => {
+    navigate('/page/1');
+  }, [navigate]);
 
   useEffect(() => {
     setData([]);
@@ -45,13 +52,17 @@ export function App() {
     setPage(1);
   };
 
+  const changePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
     <ErrorBoundary>
       <div className="bg-light">
         <Search search={search} onSearchChange={handleSearchChange} onSearchClick={handleSearch} />
-        {data.length !== 0 && <Pagination page={page} setPage={setPage} lastPage={lastPage} />}
+        {data.length !== 0 && <Pagination page={page} setPage={changePage} lastPage={lastPage} />}
         <Cards data={data} />
-        {data.length !== 0 && <Pagination page={page} setPage={setPage} lastPage={lastPage} />}
+        {data.length !== 0 && <Pagination page={page} setPage={changePage} lastPage={lastPage} />}
       </div>
     </ErrorBoundary>
   );

@@ -1,4 +1,4 @@
 import { render } from 'preact';
-import { App } from './app';
+import { AppRoutes } from './routes';
 
-render(<App />, document.getElementById('app')!);
+render(<AppRoutes />, document.getElementById('app')!);

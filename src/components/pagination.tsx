@@ -1,6 +1,8 @@
 import { PaginationProps } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 export function Pagination(props: PaginationProps) {
+  const navigate = useNavigate();
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const clicked = Number((e.target as HTMLButtonElement).textContent);
     changePage(clicked);
@@ -18,6 +20,7 @@ export function Pagination(props: PaginationProps) {
 
   const changePage = (page: number) => {
     props.setPage(page);
+    navigate(`/page/${page}`);
   };
 
   const isFirst = props.page === 1;
