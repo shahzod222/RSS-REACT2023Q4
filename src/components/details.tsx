@@ -29,10 +29,10 @@ export function Details(props: DetailsProps) {
       >
         {props.data !== null ? (
           <>
-            <Card el={props.data} />
             <button onClick={props.handleClose} className="btn btn-outline-dark w-75">
               Close
             </button>
+            <Card el={props.data} />
           </>
         ) : (
           <h2 className="text-dark">Loading...</h2>
