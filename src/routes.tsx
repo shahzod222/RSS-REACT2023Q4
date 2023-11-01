@@ -8,6 +8,7 @@ export function AppRoutes() {
       <Routes>
         <Route path="/" element={<Navigate to="/page/1" />} />
         <Route path="/page/:pageNumber" element={<App />} />
+        <Route path="/page/:pageNumber/details/:movieNumber" element={<App />} />
         <Route path="/404" element={<NotFound />} />
       </Routes>
     </Router>

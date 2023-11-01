@@ -30,7 +30,7 @@ export function Pagination(props: PaginationProps) {
 
   return (
     <nav>
-      <ul className="pagination justify-content-center my-4">
+      <ul className="pagination justify-content-center my-4 position-relative z-0">
         <li className={`page-item ${isFirst && 'disabled'}`}>
           <button className="page-link" disabled={isFirst} onClick={handlePrevious}>
             Previous
@@ -75,7 +75,7 @@ export function Pagination(props: PaginationProps) {
             className={`page-link ${isLast ? 'active' : ''}`}
             onClick={() => handleClick(props.lastPage)}
           >
-            {props.lastPage}
+            {props.lastPage > 500 ? 500 : props.lastPage}
           </button>
         </li>
         <li className={`page-item ${isLast && 'disabled'}`}>

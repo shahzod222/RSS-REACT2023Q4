@@ -19,6 +19,13 @@ export interface Movie {
 
 export interface CardsProps {
   data: Movie[];
+  page: number;
+  setMovieId: (id: number) => void;
+}
+
+export interface CardProps {
+  el: Movie;
+  handleClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
 export interface ErrorBoundaryState {
@@ -34,4 +41,16 @@ export interface PaginationProps {
   page: number;
   lastPage: number;
   setPage: (page: number) => void;
+}
+
+export interface DetailsProps {
+  data: Movie | null;
+  handleClose: () => void;
+  movieNumber: number;
+}
+
+export interface MovieDetails {
+  original_title: string;
+  poster_path: string;
+  overview: string;
 }

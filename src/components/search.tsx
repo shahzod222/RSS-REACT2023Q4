@@ -1,7 +1,7 @@
 import { SearchProps } from '../types';
 import { ErrorButton } from './errorbutton';
 
-function Search(props: SearchProps) {
+export function Search(props: SearchProps) {
   const handleInputChange = (event: { target: { value: string } }) => {
     const newSearch = event.target.value;
     props.onSearchChange(newSearch);
@@ -30,5 +30,3 @@ function Search(props: SearchProps) {
     </header>
   );
 }
-
-export default Search;
