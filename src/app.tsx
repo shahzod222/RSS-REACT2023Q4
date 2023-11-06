@@ -5,60 +5,70 @@ import { Cards } from './components/cards';
 import { ErrorBoundary } from './errorboundary';
 import { Pagination } from './components/pagination';
 import { Details } from './components/details';
+import { ItemsPerPage } from './components/itemPerPage';
 
 export function App() {
-  const { pageNumber, movieNumber } = useParams();
+  const { pageNumber, pictureNumber } = useParams();
   const navigate = useNavigate();
   const [search, setSearch] = useState(localStorage.getItem('search') || '');
   const [data, setData] = useState([]);
   const [page, setPage] = useState(Number(pageNumber));
-  const [lastPage, setLastPage] = useState(0);
   const [details, setDetails] = useState(null);
-  const [movieId, setMovieId] = useState(Number(movieNumber) || null);
+  const [pictureId, setPictureId] = useState(pictureNumber || null);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
-    if (movieId) {
-      navigate(`/page/${page}/details/${movieId}`);
-      getMovie();
+    if (pictureId) {
+      navigate(`/page/${page}/details/${pictureId}`);
+      getPicture();
     }
-  }, [movieId]);
+  }, [pictureId, itemsPerPage]);
 
   useEffect(() => {
     setData([]);
     getData();
-  }, [page]);
+  }, [page, itemsPerPage]);
 
   useEffect(() => {
     localStorage.setItem('search', search);
   }, [search]);
 
   const getData = () => {
-    const apiKey = '1e78e4c09cd2d96c02dfecde6654a420';
-    const defaultUrl = `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}&page=${page}`;
-    const url =
-      search !== ''
-        ? `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${search}&page=${page}`
-        : defaultUrl;
+    const accessKey = 'wb6DTO5KrTRFyhIOh2iCJIjze5o_YbPM3Z7-Umd4myM';
+    const apiUrl = `https://api.unsplash.com/search/photos?page=${page}&per_page=${itemsPerPage}&query=${
+      search || 'nature'
+    }`;
 
-    fetch(url)
-      .then((res) => res.json())
+    fetch(apiUrl, {
+      headers: {
+        Authorization: `Client-ID ${accessKey}`,
+      },
+    })
+      .then((response) => response.json())
       .then((data) => {
-        setLastPage(data.total_pages);
         setData(data.results);
-        if (data.results.length === 0) {
-          navigate('/404');
-        }
+        console.log(data.results);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
       });
   };
 
-  const getMovie = (id: number = Number(movieId)) => {
-    const apiKey = '1e78e4c09cd2d96c02dfecde6654a420';
-    const apiUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
+  const getPicture = (id: string | null = pictureId) => {
+    const accessKey = 'wb6DTO5KrTRFyhIOh2iCJIjze5o_YbPM3Z7-Umd4myM';
+    const apiUrl = `https://api.unsplash.com/photos/${id}`;
 
-    fetch(apiUrl)
-      .then((res) => res.json())
+    fetch(apiUrl, {
+      headers: {
+        Authorization: `Client-ID ${accessKey}`,
+      },
+    })
+      .then((response) => response.json())
       .then((data) => {
-        data !== null ? setDetails(data) : navigate('/404');
+        setDetails(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
       });
   };
 
@@ -78,7 +88,7 @@ export function App() {
   };
 
   const handleClose = () => {
-    setMovieId(null);
+    setPictureId(null);
     navigate(`/page/${page}`);
     setDetails(null);
   };
@@ -86,11 +96,14 @@ export function App() {
   return (
     <ErrorBoundary>
       <div className="bg-light position-relative z-0">
-        {movieId && <Details data={details} handleClose={handleClose} movieNumber={movieId} />}
+        {pictureId && (
+          <Details data={details} handleClose={handleClose} pictureNumber={pictureId} />
+        )}
         <Search search={search} onSearchChange={handleSearchChange} onSearchClick={handleSearch} />
-        {data.length !== 0 && <Pagination page={page} setPage={changePage} lastPage={lastPage} />}
-        <Cards data={data} page={page} setMovieId={setMovieId} />
-        {data.length !== 0 && <Pagination page={page} setPage={changePage} lastPage={lastPage} />}
+        <ItemsPerPage change={setItemsPerPage} page={setPage} />
+        <Pagination page={page} setPage={changePage} />
+        <Cards data={data} page={page} setPictureId={setPictureId} />
+        <Pagination page={page} setPage={changePage} />
       </div>
     </ErrorBoundary>
   );

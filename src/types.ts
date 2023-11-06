@@ -10,21 +10,22 @@ export interface DefaultProps {
   children?: ReactNode;
 }
 
-export interface Movie {
-  title: string;
-  poster_path: string;
-  overview: string;
-  id: number;
+export interface Picture {
+  id: string;
+  slug: string;
+  urls: {
+    regular: string;
+  };
 }
 
 export interface CardsProps {
-  data: Movie[];
+  data: Picture[];
   page: number;
-  setMovieId: (id: number) => void;
+  setPictureId: (id: string) => void;
 }
 
 export interface CardProps {
-  el: Movie;
+  el: Picture;
   handleClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
@@ -39,18 +40,16 @@ export interface ErrorButtonState {
 
 export interface PaginationProps {
   page: number;
-  lastPage: number;
   setPage: (page: number) => void;
 }
 
 export interface DetailsProps {
-  data: Movie | null;
+  data: Picture | null;
   handleClose: () => void;
-  movieNumber: number;
+  pictureNumber: string;
 }
 
-export interface MovieDetails {
-  original_title: string;
-  poster_path: string;
-  overview: string;
+export interface ItemsPerPageProps {
+  change: (num: number) => void;
+  page: (num: number) => void;
 }

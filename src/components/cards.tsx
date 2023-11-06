@@ -7,18 +7,15 @@ export function Cards(props: CardsProps) {
     const parentDiv = (e.target as HTMLElement).closest('.card');
 
     if (parentDiv) {
-      const movieId = Number(parentDiv.id);
-      props.setMovieId(movieId);
+      const picId = parentDiv.id;
+      props.setPictureId(picId);
     }
   }
 
   return (
-    <div className="d-flex flex-wrap justify-content-center mx-5">
+    <div className="row row-cols-1 row-cols-md-3 g-3 my-4">
       {props.data.length !== 0 ? (
-        props.data.map(
-          (el) =>
-            el.poster_path && el.overview && <Card el={el} handleClick={handleClick} key={el.id} />
-        )
+        props.data.map((el) => <Card el={el} handleClick={handleClick} key={el.id} />)
       ) : (
         <h2 className="text-dark">Loading...</h2>
       )}

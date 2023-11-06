@@ -19,7 +19,7 @@ export function Details(props: DetailsProps) {
       onClick={props.handleClose}
     >
       <div
-        className="w-25 h-100 py-4 p-4 d-flex flex-column justify-content-center align-items-center"
+        className="w-50 h-100 py-4 p-4 d-flex flex-column justify-content-center align-items-center"
         style={{
           backgroundColor: 'white',
           borderRadius: '10px',
