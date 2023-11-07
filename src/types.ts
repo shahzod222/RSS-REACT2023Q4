@@ -12,7 +12,7 @@ export interface DefaultProps {
 
 export interface Picture {
   id: string;
-  slug: string;
+  alt_description: string;
   urls: {
     regular: string;
   };
