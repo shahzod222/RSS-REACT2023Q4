@@ -10,6 +10,7 @@ export function AppRoutes() {
         <Route path="/page/:pageNumber" element={<App />} />
         <Route path="/page/:pageNumber/details/:pictureId" element={<App />} />
         <Route path="/404" element={<NotFound />} />
+        <Route path="/*" element={<Navigate to="/404" />} />
       </Routes>
     </Router>
   );

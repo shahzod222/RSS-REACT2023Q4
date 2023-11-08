@@ -4,7 +4,7 @@ import React from 'react';
 export function ItemsPerPage(props: ItemsPerPageProps) {
   const handleChange = (e: React.MouseEvent) => {
     const value = Number((e.target as HTMLButtonElement).textContent);
-    props.change(value);
+    props.changeItemsPerPage(value);
     props.page(1);
   };
 

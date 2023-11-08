@@ -17,7 +17,7 @@ export function Cards(props: CardsProps) {
       {props.data.length !== 0 ? (
         props.data.map((el) => <Card el={el} handleClick={handleClick} key={el.id} />)
       ) : (
-        <h2 className="text-dark">Loading...</h2>
+        <h2>No data</h2>
       )}
     </div>
   );

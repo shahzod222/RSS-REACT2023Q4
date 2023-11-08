@@ -12,7 +12,7 @@ export interface DefaultProps {
 
 export interface Picture {
   id: string;
-  slug: string;
+  alt_description: string;
   urls: {
     regular: string;
   };
@@ -20,7 +20,6 @@ export interface Picture {
 
 export interface CardsProps {
   data: Picture[];
-  page: number;
   setPictureId: (id: string) => void;
 }
 
@@ -50,6 +49,6 @@ export interface DetailsProps {
 }
 
 export interface ItemsPerPageProps {
-  change: (num: number) => void;
+  changeItemsPerPage: (num: number) => void;
   page: (num: number) => void;
 }

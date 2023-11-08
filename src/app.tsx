@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Search } from './components/search';
 import { Cards } from './components/cards';
 import { ErrorBoundary } from './errorboundary';
-import { Pagination } from './components/pagination';
 import { Details } from './components/details';
+import { Pagination } from './components/pagination';
 import { ItemsPerPage } from './components/itemPerPage';
 
 export function App() {
@@ -16,6 +16,7 @@ export function App() {
   const [details, setDetails] = useState(null);
   const [pictureId, setPictureId] = useState(pictureNumber || null);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (pictureId) {
@@ -38,6 +39,7 @@ export function App() {
     const apiUrl = `https://api.unsplash.com/search/photos?page=${page}&per_page=${itemsPerPage}&query=${
       search || 'nature'
     }`;
+    setIsLoading(true);
 
     fetch(apiUrl, {
       headers: {
@@ -46,8 +48,10 @@ export function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setData(data.results);
-        console.log(data.results);
+        if (data.results.length !== 0) {
+          setData(data.results);
+        }
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -57,6 +61,7 @@ export function App() {
   const getPicture = (id: string | null = pictureId) => {
     const accessKey = 'wb6DTO5KrTRFyhIOh2iCJIjze5o_YbPM3Z7-Umd4myM';
     const apiUrl = `https://api.unsplash.com/photos/${id}`;
+    setIsLoading(true);
 
     fetch(apiUrl, {
       headers: {
@@ -66,6 +71,7 @@ export function App() {
       .then((response) => response.json())
       .then((data) => {
         setDetails(data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -83,10 +89,6 @@ export function App() {
     navigate('/page/1');
   };
 
-  const changePage = (newPage: number) => {
-    setPage(newPage);
-  };
-
   const handleClose = () => {
     setPictureId(null);
     navigate(`/page/${page}`);
@@ -100,10 +102,16 @@ export function App() {
           <Details data={details} handleClose={handleClose} pictureNumber={pictureId} />
         )}
         <Search search={search} onSearchChange={handleSearchChange} onSearchClick={handleSearch} />
-        <ItemsPerPage change={setItemsPerPage} page={setPage} />
-        <Pagination page={page} setPage={changePage} />
-        <Cards data={data} page={page} setPictureId={setPictureId} />
-        <Pagination page={page} setPage={changePage} />
+        {!isLoading ? (
+          <>
+            <ItemsPerPage changeItemsPerPage={setItemsPerPage} page={setPage} />
+            <Pagination page={page} setPage={setPage} />
+            <Cards data={data} setPictureId={setPictureId} />
+            <Pagination page={page} setPage={setPage} />
+          </>
+        ) : (
+          <h2>Loading...</h2>
+        )}
       </div>
     </ErrorBoundary>
   );
