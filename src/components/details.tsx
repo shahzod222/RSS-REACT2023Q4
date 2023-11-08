@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from './card';
 import { DetailsProps } from '../types';
+import { Outlet } from 'react-router-dom';
 
 export function Details(props: DetailsProps) {
   const handleInnerClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -37,6 +38,7 @@ export function Details(props: DetailsProps) {
         ) : (
           <h2 className="text-dark">Loading...</h2>
         )}
+        <Outlet />
       </div>
     </div>
   );
