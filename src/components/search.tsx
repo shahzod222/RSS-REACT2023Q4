@@ -1,10 +1,19 @@
+import React from 'react';
 import { SearchProps } from '../types';
 import { ErrorButton } from './errorbutton';
 
 export function Search(props: SearchProps) {
-  const handleInputChange = (event: { target: { value: string } }) => {
+  let search = '';
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearch = event.target.value;
     props.onSearchChange(newSearch);
+    search = event.target.value;
+  };
+
+  const handleClick = () => {
+    localStorage.setItem('search', search);
+    props.onSearchClick();
   };
 
   return (
@@ -18,9 +27,9 @@ export function Search(props: SearchProps) {
               placeholder="Search..."
               aria-label="Search"
               onChange={handleInputChange}
-              value={props.search}
+              value={props.search || String(localStorage.getItem('search'))}
             />
-            <button className="btn btn-outline-dark mx-3" onClick={props.onSearchClick}>
+            <button className="btn btn-outline-dark mx-3" onClick={handleClick}>
               Search
             </button>
             <ErrorButton />

@@ -26,6 +26,7 @@ export function Details(props: DetailsProps) {
           boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
         }}
         onClick={handleInnerClick}
+        data-testid="inner-content"
       >
         {props.data !== null ? (
           <>
