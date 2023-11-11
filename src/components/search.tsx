@@ -1,19 +1,20 @@
 import React from 'react';
-import { SearchProps } from '../types';
 import { ErrorButton } from './errorbutton';
+import { useAppContext } from '../appContext';
 
-export function Search(props: SearchProps) {
-  let search = '';
+export function Search() {
+  let searchForLS = '';
+  const { search, setSearch, handleSearch } = useAppContext();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearch = event.target.value;
-    props.onSearchChange(newSearch);
-    search = event.target.value;
+    searchForLS = newSearch;
+    setSearch(newSearch);
   };
 
   const handleClick = () => {
-    localStorage.setItem('search', search);
-    props.onSearchClick();
+    localStorage.setItem('search', searchForLS);
+    handleSearch();
   };
 
   return (
@@ -27,7 +28,7 @@ export function Search(props: SearchProps) {
               placeholder="Search..."
               aria-label="Search"
               onChange={handleInputChange}
-              value={props.search || String(localStorage.getItem('search'))}
+              value={search || String(localStorage.getItem('search'))}
             />
             <button className="btn btn-outline-dark mx-3" onClick={handleClick}>
               Search

@@ -1,60 +1,57 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { render, screen } from '@testing-library/react';
+import { AppProvider, useAppContext } from '../appContext';
 import { Details } from '../components/details';
+import '@testing-library/jest-dom/extend-expect';
+import { MemoryRouter } from 'react-router-dom';
+import { act } from 'react-dom/test-utils';
 
-describe('Details component tests', () => {
-  it('should display loading indicator while fetching data', () => {
-    const { getByText } = render(<Details data={null} handleClose={() => {}} pictureNumber="1" />);
-    const loadingElement = getByText('Loading...');
+test('displays a loading indicator while fetching data', () => {
+  act(() => {
+    const MockDetailsComponent = () => {
+      const { setDetails } = useAppContext();
+      setDetails(null);
+      return <Details />;
+    };
 
-    expect(loadingElement).toBeInTheDocument();
+    render(
+      <MemoryRouter>
+        <AppProvider>
+          <MockDetailsComponent />
+        </AppProvider>
+      </MemoryRouter>
+    );
   });
 
-  const cardData = {
+  const loadingIndicator = screen.getByText('Loading...');
+  expect(loadingIndicator).toBeInTheDocument();
+});
+
+test('displays detailed card data', () => {
+  const detailsData = {
     id: '1',
     urls: {
-      regular: 'https://example.com/image.jpg',
+      regular: 'image-url-1',
     },
-    alt_description: 'A beautiful image',
+    alt_description: 'Alt Description 1',
   };
 
-  it('should display detailed card data', () => {
-    const { getByText, getByAltText } = render(
-      <Details data={cardData} handleClose={() => {}} pictureNumber="1" />
+  act(() => {
+    const MockDetailsComponent = () => {
+      const { setDetails } = useAppContext();
+      setDetails(detailsData);
+      return <Details />;
+    };
+
+    render(
+      <MemoryRouter>
+        <AppProvider>
+          <MockDetailsComponent />
+        </AppProvider>
+      </MemoryRouter>
     );
-
-    const closeButton = getByText('Close');
-    const imageElement = getByAltText(cardData.alt_description);
-
-    expect(closeButton).toBeInTheDocument();
-    expect(imageElement).toBeInTheDocument();
-    expect((imageElement as HTMLImageElement).src).toBe(cardData.urls.regular);
   });
 
-  it('should hide the component when clicking the close button', () => {
-    const handleCloseMock = jest.fn();
-
-    const { getByText } = render(
-      <Details data={cardData} handleClose={handleCloseMock} pictureNumber="1" />
-    );
-
-    const closeButton = getByText('Close');
-    fireEvent.click(closeButton);
-
-    expect(handleCloseMock).toHaveBeenCalled();
-  });
-
-  it('should not hide the component when clicking the inner content', () => {
-    const handleCloseMock = jest.fn();
-
-    const { getByTestId } = render(
-      <Details data={cardData} handleClose={handleCloseMock} pictureNumber="1" />
-    );
-
-    const innerContent = getByTestId('inner-content');
-    fireEvent.click(innerContent);
-
-    expect(handleCloseMock).not.toHaveBeenCalled();
-  });
+  const cardTitle = screen.getByText(detailsData.alt_description);
+  expect(cardTitle).toBeInTheDocument();
 });

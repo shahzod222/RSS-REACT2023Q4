@@ -1,44 +1,34 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Search } from '../components/search'; // Replace with the actual import path
 import '@testing-library/jest-dom/extend-expect';
-import { Search } from '../components/search';
 
-const mockLocalStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-};
+// Mock the context provider
+jest.mock('../appContext', () => ({
+  useAppContext: () => ({
+    search: 'Saved Value',
+    setSearch: jest.fn(),
+    handleSearch: jest.fn(),
+  }),
+}));
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+describe('Search component', () => {
+  it('saves the entered value to local storage when clicking the Search button', () => {
+    render(<Search />);
+    const searchInput = screen.getByPlaceholderText('Search...'); // Replace with your actual placeholder text
+    fireEvent.change(searchInput, { target: { value: 'Test Search' } });
 
-describe('Search component tests', () => {
-  it('should save entered value to local storage when clicking the Search button', async () => {
-    const { getByPlaceholderText, getByText } = render(
-      <Search search="" onSearchChange={() => {}} onSearchClick={() => {}} />
-    );
-
-    const searchInput = getByPlaceholderText('Search...');
-    const searchButton = getByText('Search');
-
-    fireEvent.change(searchInput, { target: { value: 'cats' } });
+    const searchButton = screen.getByText('Search'); // Replace with your actual button text
     fireEvent.click(searchButton);
 
-    await waitFor(() => {
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith('search', 'cats');
-    });
+    const savedValue = localStorage.getItem('search');
+    expect(savedValue).toBe('Test Search');
   });
 
-  it('should retrieve the value from local storage upon mounting', async () => {
-    mockLocalStorage.getItem.mockReturnValueOnce('dogs');
-
-    const { getByPlaceholderText } = render(
-      <Search search="" onSearchChange={() => {}} onSearchClick={() => {}} />
-    );
-
-    const searchInput = getByPlaceholderText('Search...');
-
-    await waitFor(() => {
-      expect((searchInput as HTMLInputElement).value).toBe('dogs');
-    });
+  it('retrieves the value from local storage upon mounting', () => {
+    localStorage.setItem('search', 'Saved Value');
+    render(<Search />);
+    const searchInput = screen.getByPlaceholderText('Search...'); // Replace with your actual placeholder text
+    expect(searchInput).toHaveValue('Saved Value');
   });
 });

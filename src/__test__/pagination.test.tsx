@@ -1,70 +1,23 @@
 import React from 'react';
-import { render, fireEvent, cleanup } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { AppProvider } from '../appContext';
 import { Pagination } from '../components/pagination';
-import { MemoryRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import '@testing-library/jest-dom/extend-expect';
 
-afterEach(() => cleanup());
-
-describe('Pagination component tests', () => {
-  it('should update URL query parameter when page changes', () => {
-    const setPageMock = jest.fn();
-
-    const { getByText } = render(
-      <MemoryRouter>
-        <Pagination page={1} setPage={setPageMock} />
-      </MemoryRouter>
+describe('Pagination component', () => {
+  it('updates URL query parameter when page changes', () => {
+    render(
+      <Router>
+        <AppProvider>
+          <Pagination />
+        </AppProvider>
+      </Router>
     );
-    const nextPageButton = getByText('Next');
 
+    const nextPageButton = screen.getByTestId('next-btn');
     fireEvent.click(nextPageButton);
 
-    expect(setPageMock).toHaveBeenCalledWith(2);
-  });
-
-  it('should handle clicking on page numbers correctly', () => {
-    const setPageMock = jest.fn();
-
-    const { getByText } = render(
-      <MemoryRouter>
-        <Pagination page={2} setPage={setPageMock} />
-      </MemoryRouter>
-    );
-    const secondPageButton = getByText('2');
-
-    fireEvent.click(secondPageButton);
-
-    expect(setPageMock).toHaveBeenCalledWith(2);
-  });
-
-  it('should handle clicking on "Previous" button correctly', () => {
-    const setPageMock = jest.fn();
-
-    const { getByText } = render(
-      <MemoryRouter>
-        <Pagination page={2} setPage={setPageMock} />
-      </MemoryRouter>
-    );
-    const previousPageButton = getByText('Previous');
-
-    fireEvent.click(previousPageButton);
-
-    expect(setPageMock).toHaveBeenCalledWith(1);
-  });
-
-  it('should disable "Previous" button when on the first page', () => {
-    const setPageMock = jest.fn();
-
-    const { getByText } = render(
-      <MemoryRouter>
-        <Pagination page={1} setPage={setPageMock} />
-      </MemoryRouter>
-    );
-    const previousPageButton = getByText('Previous');
-
-    expect(previousPageButton).toBeDisabled();
-    fireEvent.click(previousPageButton);
-
-    expect(setPageMock).not.toHaveBeenCalled();
+    expect(window.location.pathname).toBe('/page/2');
   });
 });

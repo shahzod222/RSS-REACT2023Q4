@@ -1,11 +1,5 @@
 import { ReactNode } from 'react';
 
-export interface SearchProps {
-  onSearchChange: (newSearch: string) => void;
-  search: string;
-  onSearchClick: () => void;
-}
-
 export interface DefaultProps {
   children?: ReactNode;
 }
@@ -16,11 +10,6 @@ export interface Picture {
   urls: {
     regular: string;
   };
-}
-
-export interface CardsProps {
-  data: Picture[];
-  setPictureId: (id: string) => void;
 }
 
 export interface CardProps {
@@ -35,20 +24,4 @@ export interface ErrorBoundaryState {
 
 export interface ErrorButtonState {
   hasError: boolean;
-}
-
-export interface PaginationProps {
-  page: number;
-  setPage: (page: number) => void;
-}
-
-export interface DetailsProps {
-  data: Picture | null;
-  handleClose: () => void;
-  pictureNumber: string;
-}
-
-export interface ItemsPerPageProps {
-  changeItemsPerPage: (num: number) => void;
-  page: (num: number) => void;
 }

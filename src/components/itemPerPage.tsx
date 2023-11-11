@@ -1,11 +1,13 @@
-import { ItemsPerPageProps } from '../types';
 import React from 'react';
+import { useAppContext } from '../appContext';
 
-export function ItemsPerPage(props: ItemsPerPageProps) {
+export function ItemsPerPage() {
+  const { setItemsPerPage, setPage } = useAppContext();
+
   const handleChange = (e: React.MouseEvent) => {
     const value = Number((e.target as HTMLButtonElement).textContent);
-    props.changeItemsPerPage(value);
-    props.page(1);
+    setItemsPerPage(value);
+    setPage(1);
   };
 
   return (

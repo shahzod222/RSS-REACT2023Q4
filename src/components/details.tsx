@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card } from './card';
-import { DetailsProps } from '../types';
+import { useAppContext } from '../appContext';
 
-export function Details(props: DetailsProps) {
+export function Details() {
+  const { handleClose, details } = useAppContext();
   const handleInnerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
@@ -16,7 +17,7 @@ export function Details(props: DetailsProps) {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         height: '100vh',
       }}
-      onClick={props.handleClose}
+      onClick={handleClose}
     >
       <div
         className="w-50 h-100 py-4 p-4 d-flex flex-column justify-content-center align-items-center"
@@ -28,12 +29,12 @@ export function Details(props: DetailsProps) {
         onClick={handleInnerClick}
         data-testid="inner-content"
       >
-        {props.data !== null ? (
+        {details !== null ? (
           <>
-            <button onClick={props.handleClose} className="btn btn-outline-dark w-75">
+            <button onClick={handleClose} className="btn btn-outline-dark w-75">
               Close
             </button>
-            <Card el={props.data} />
+            <Card el={details} />
           </>
         ) : (
           <h2 className="text-dark">Loading...</h2>
