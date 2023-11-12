@@ -29,8 +29,13 @@ export function Search() {
               aria-label="Search"
               onChange={handleInputChange}
               value={search || String(localStorage.getItem('search'))}
+              data-testid="search-input"
             />
-            <button className="btn btn-outline-dark mx-3" onClick={handleClick}>
+            <button
+              className="btn btn-outline-dark mx-3"
+              onClick={handleClick}
+              data-testid="search-button"
+            >
               Search
             </button>
             <ErrorButton />

@@ -1,9 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { Search } from '../components/search'; // Replace with the actual import path
+import { Search } from '../components/search';
 import '@testing-library/jest-dom/extend-expect';
 
-// Mock the context provider
 jest.mock('../appContext', () => ({
   useAppContext: () => ({
     search: 'Saved Value',
@@ -15,10 +14,10 @@ jest.mock('../appContext', () => ({
 describe('Search component', () => {
   it('saves the entered value to local storage when clicking the Search button', () => {
     render(<Search />);
-    const searchInput = screen.getByPlaceholderText('Search...'); // Replace with your actual placeholder text
+    const searchInput = screen.getByPlaceholderText('Search...');
     fireEvent.change(searchInput, { target: { value: 'Test Search' } });
 
-    const searchButton = screen.getByText('Search'); // Replace with your actual button text
+    const searchButton = screen.getByText('Search');
     fireEvent.click(searchButton);
 
     const savedValue = localStorage.getItem('search');

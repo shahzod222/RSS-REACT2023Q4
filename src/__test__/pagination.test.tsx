@@ -19,5 +19,24 @@ describe('Pagination component', () => {
     fireEvent.click(nextPageButton);
 
     expect(window.location.pathname).toBe('/page/2');
+
+    const prevPageButton = screen.getByTestId('prev-btn');
+    fireEvent.click(prevPageButton);
+
+    expect(window.location.pathname).toBe('/page/1');
+  });
+
+  it('disables Prev button when 1 page', () => {
+    render(
+      <Router>
+        <AppProvider>
+          <Pagination />
+        </AppProvider>
+      </Router>
+    );
+
+    const prevPageButton = screen.getByTestId('prev-btn');
+
+    expect(prevPageButton).toBeDisabled();
   });
 });
