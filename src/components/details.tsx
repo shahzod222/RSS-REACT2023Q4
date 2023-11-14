@@ -10,6 +10,7 @@ export function Details() {
 
   return (
     <div
+      data-testid="details"
       className="w-100 z-3 position-fixed d-flex align-items-center justify-content-end"
       style={{
         top: 0,

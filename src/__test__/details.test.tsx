@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { AppProvider, useAppContext } from '../appContext';
 import { Details } from '../components/details';
 import '@testing-library/jest-dom/extend-expect';
@@ -54,4 +54,9 @@ test('displays detailed card data', () => {
 
   const cardTitle = screen.getByText(detailsData.alt_description);
   expect(cardTitle).toBeInTheDocument();
+
+  const closeButton = screen.getByText('Close');
+  fireEvent.click(closeButton);
+
+  expect(cardTitle).not.toBeInTheDocument();
 });
