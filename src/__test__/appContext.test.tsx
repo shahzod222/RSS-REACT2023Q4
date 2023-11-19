@@ -3,18 +3,22 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { AppProvider, useAppContext } from '../appContext';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { selectSearch, setSearch, store } from '../store';
 
 describe('Search component', () => {
   it('updates search value and triggers search when "Search" button is clicked', async () => {
     const TestComponent = () => {
       const context = useAppContext();
+      const dispatch = useDispatch();
+      const search = useSelector(selectSearch);
       return (
         <div>
           <input
             data-testid="search-input"
             type="text"
-            value={context.search}
-            onChange={(e) => context.setSearch(e.target.value)}
+            value={search}
+            onChange={(e) => dispatch(setSearch(e.target.value))}
           />
           <button data-testid="search-button" onClick={context.handleSearch}>
             Search
@@ -30,9 +34,11 @@ describe('Search component', () => {
 
     render(
       <Router>
-        <AppProvider>
-          <TestComponent />
-        </AppProvider>
+        <Provider store={store}>
+          <AppProvider>
+            <TestComponent />
+          </AppProvider>
+        </Provider>
       </Router>
     );
 

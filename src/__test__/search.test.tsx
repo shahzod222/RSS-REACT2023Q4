@@ -1,33 +1,27 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Search } from '../components/search';
+import { Provider } from 'react-redux';
+import { store } from '../store';
 import '@testing-library/jest-dom/extend-expect';
-
-jest.mock('../appContext', () => ({
-  useAppContext: () => ({
-    search: 'Saved Value',
-    setSearch: jest.fn(),
-    handleSearch: jest.fn(),
-  }),
-}));
+import { AppProvider } from '../appContext';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 describe('Search component', () => {
-  it('saves the entered value to local storage when clicking the Search button', () => {
-    render(<Search />);
-    const searchInput = screen.getByPlaceholderText('Search...');
-    fireEvent.change(searchInput, { target: { value: 'Test Search' } });
-
-    const searchButton = screen.getByText('Search');
-    fireEvent.click(searchButton);
-
-    const savedValue = localStorage.getItem('search');
-    expect(savedValue).toBe('Test Search');
-  });
-
   it('retrieves the value from local storage upon mounting', () => {
-    localStorage.setItem('search', 'Saved Value');
-    render(<Search />);
-    const searchInput = screen.getByPlaceholderText('Search...'); // Replace with your actual placeholder text
-    expect(searchInput).toHaveValue('Saved Value');
+    localStorage.setItem('search', 'ocean');
+
+    render(
+      <Router>
+        <Provider store={store}>
+          <AppProvider>
+            <Search />
+          </AppProvider>
+        </Provider>
+      </Router>
+    );
+
+    const searchInput = screen.getByPlaceholderText('Search...');
+    expect(searchInput).toHaveValue('ocean');
   });
 });

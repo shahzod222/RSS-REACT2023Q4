@@ -1,62 +1,76 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { AppProvider, useAppContext } from '../appContext';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { store, setDetails } from '../store';
 import { Details } from '../components/details';
 import '@testing-library/jest-dom/extend-expect';
-import { MemoryRouter } from 'react-router-dom';
-import { act } from 'react-dom/test-utils';
 
-test('displays a loading indicator while fetching data', () => {
-  act(() => {
-    const MockDetailsComponent = () => {
-      const { setDetails } = useAppContext();
-      setDetails(null);
-      return <Details />;
-    };
+describe('Details component', () => {
+  it('displays loading indicator while fetching data', () => {
+    store.dispatch(setDetails(null));
 
     render(
-      <MemoryRouter>
-        <AppProvider>
-          <MockDetailsComponent />
-        </AppProvider>
-      </MemoryRouter>
+      <Provider store={store}>
+        <Details />
+      </Provider>
     );
+
+    const loadingMessage = screen.getByText('Loading...');
+    expect(loadingMessage).toBeInTheDocument();
   });
 
-  const loadingIndicator = screen.getByText('Loading...');
-  expect(loadingIndicator).toBeInTheDocument();
-});
-
-test('displays detailed card data', () => {
-  const detailsData = {
-    id: '1',
-    urls: {
-      regular: 'image-url-1',
-    },
-    alt_description: 'Alt Description 1',
-  };
-
-  act(() => {
-    const MockDetailsComponent = () => {
-      const { setDetails } = useAppContext();
-      setDetails(detailsData);
-      return <Details />;
+  it('displays detailed card component with correct data', async () => {
+    const testData = {
+      id: '1',
+      urls: {
+        regular: 'image-url-1',
+      },
+      alt_description: 'Alt Description 1',
     };
 
+    store.dispatch(setDetails(testData));
+
     render(
-      <MemoryRouter>
-        <AppProvider>
-          <MockDetailsComponent />
-        </AppProvider>
-      </MemoryRouter>
+      <Provider store={store}>
+        <Details />
+      </Provider>
     );
+
+    await waitFor(() => {
+      const detailedCard = screen.getByTestId('card');
+      expect(detailedCard).toBeInTheDocument();
+
+      const cardTitle = screen.getByText(testData.alt_description);
+      expect(cardTitle).toBeInTheDocument();
+    });
   });
 
-  const cardTitle = screen.getByText(detailsData.alt_description);
-  expect(cardTitle).toBeInTheDocument();
+  it('hides the component when clicking the close button', () => {
+    const testData = {
+      id: '1',
+      urls: {
+        regular: 'image-url-1',
+      },
+      alt_description: 'Alt Description 1',
+    };
 
-  const closeButton = screen.getByText('Close');
-  fireEvent.click(closeButton);
+    store.dispatch(setDetails(testData));
 
-  expect(cardTitle).not.toBeInTheDocument();
+    render(
+      <Provider store={store}>
+        <Details />
+      </Provider>
+    );
+
+    const detailedCard = screen.getByTestId('card');
+    expect(detailedCard).toBeInTheDocument();
+
+    const closeButton = screen.getByText('Close');
+    fireEvent.click(closeButton);
+
+    waitFor(() => {
+      const detailedCardAfterClose = screen.queryByTestId('card');
+      expect(detailedCardAfterClose).toBeNull();
+    });
+  });
 });

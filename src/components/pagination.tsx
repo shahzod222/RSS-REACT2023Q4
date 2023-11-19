@@ -1,13 +1,16 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPage, setPage } from '../store';
+import { useNavigate } from 'react-router-dom';
 
 export function Pagination() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const page = useSelector(selectPage);
 
   const changePage = (pageNum: number) => {
     dispatch(setPage(pageNum));
+    navigate(`/page/${pageNum}`);
   };
 
   const paginationItems = page === 1 ? [1, 2, 3] : [page - 1, page, page + 1];

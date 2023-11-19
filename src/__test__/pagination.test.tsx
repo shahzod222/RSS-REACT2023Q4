@@ -3,15 +3,17 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { AppProvider } from '../appContext';
 import { Pagination } from '../components/pagination';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../store';
 import '@testing-library/jest-dom/extend-expect';
 
 describe('Pagination component', () => {
   it('updates URL query parameter when page changes', () => {
     render(
       <Router>
-        <AppProvider>
+        <Provider store={store}>
           <Pagination />
-        </AppProvider>
+        </Provider>
       </Router>
     );
 
@@ -29,9 +31,11 @@ describe('Pagination component', () => {
   it('disables Prev button when 1 page', () => {
     render(
       <Router>
-        <AppProvider>
-          <Pagination />
-        </AppProvider>
+        <Provider store={store}>
+          <AppProvider>
+            <Pagination />
+          </AppProvider>
+        </Provider>
       </Router>
     );
 

@@ -5,12 +5,19 @@ import { ErrorButton } from './errorbutton';
 import { useAppContext } from '../appContext';
 
 export function Search() {
+  let searchForLS = '';
   const dispatch = useDispatch();
   const search: string = useSelector(selectSearch);
   const { handleSearch } = useAppContext();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    searchForLS = event.target.value;
     dispatch(setReduxSearch(event.target.value));
+  };
+
+  const handleClick = () => {
+    handleSearch();
+    localStorage.setItem('search', searchForLS);
   };
 
   return (
@@ -24,12 +31,12 @@ export function Search() {
               placeholder="Search..."
               aria-label="Search"
               onChange={handleInputChange}
-              value={search}
+              value={search || String(localStorage.getItem('search'))}
               data-testid="search-input"
             />
             <button
               className="btn btn-outline-dark mx-3"
-              onClick={handleSearch}
+              onClick={handleClick}
               data-testid="search-button"
             >
               Search
