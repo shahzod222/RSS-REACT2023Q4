@@ -1,22 +1,21 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Picture } from './types';
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useContext, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  setSearch,
+  setPage,
+  setPictureId,
+  setMainPageLoading,
+  setDetailsPageLoading,
+  setData,
+  selectSearch,
+  selectPage,
+  selectPictureId,
+  setDetails,
+  selectItemsPerPage,
+} from './store';
 
 export interface AppContextProps {
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  data: Picture[];
-  setData: React.Dispatch<React.SetStateAction<Picture[]>>;
-  page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-  details: Picture | null;
-  setDetails: React.Dispatch<React.SetStateAction<Picture | null>>;
-  pictureId: string | null;
-  setPictureId: React.Dispatch<React.SetStateAction<string | null>>;
-  itemsPerPage: number;
-  setItemsPerPage: React.Dispatch<React.SetStateAction<number>>;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   getData: () => void;
   getPicture: (id: string | null) => void;
   handleSearch: () => void;
@@ -25,22 +24,22 @@ export interface AppContextProps {
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
 
-export function AppProvider({ children }: { children: ReactNode }) {
+export function AppProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const [search, setSearch] = useState(localStorage.getItem('search') || '');
-  const [data, setData] = useState<Picture[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [details, setDetails] = useState<Picture | null>(null);
-  const [pictureId, setPictureId] = useState<string | null>(null);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { pageNumber } = useParams();
+  const search = useSelector(selectSearch);
+  const page = useSelector(selectPage);
+  const pictureId = useSelector(selectPictureId);
+  const itemsPerPage = useSelector(selectItemsPerPage);
 
   const getData = () => {
     const accessKey = 'wb6DTO5KrTRFyhIOh2iCJIjze5o_YbPM3Z7-Umd4myM';
-    const apiUrl = `https://api.unsplash.com/search/photos?page=${page}&per_page=${itemsPerPage}&query=${
-      search || 'nature'
-    }`;
-    setIsLoading(true);
+    const apiUrl = `https://api.unsplash.com/search/photos?page=${
+      pageNumber || page
+    }&per_page=${itemsPerPage}&query=${search || 'nature'}`;
+
+    dispatch(setMainPageLoading(true));
 
     fetch(apiUrl, {
       headers: {
@@ -50,12 +49,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.results.length !== 0) {
-          setData(data.results);
+          dispatch(setData(data.results));
         }
-        setIsLoading(false);
+        dispatch(setMainPageLoading(false));
       })
       .catch((error) => {
         console.error('Error:', error);
+        dispatch(setMainPageLoading(false));
       });
   };
 
@@ -70,7 +70,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        setDetails(data);
+        dispatch(setDetailsPageLoading(true));
+        dispatch(setDetails(data));
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -78,33 +79,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const handleSearch = () => {
-    setData([]);
+    dispatch(setPage(1));
     getData();
   };
 
   const handleClose = () => {
-    setPictureId(null);
+    dispatch(setPictureId(null));
     navigate(`/page/${page}`);
-    setDetails(null);
   };
+
+  useEffect(() => {
+    dispatch(setSearch(localStorage.getItem('search') || ''));
+  }, [dispatch]);
 
   return (
     <AppContext.Provider
       value={{
-        search,
-        setSearch,
-        data,
-        setData,
-        page,
-        setPage,
-        details,
-        setDetails,
-        pictureId,
-        setPictureId,
-        itemsPerPage,
-        setItemsPerPage,
-        isLoading,
-        setIsLoading,
         getData,
         getPicture,
         handleSearch,

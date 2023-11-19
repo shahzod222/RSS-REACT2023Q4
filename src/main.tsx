@@ -1,4 +1,11 @@
 import { render } from 'preact';
 import { AppRoutes } from './routes';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
-render(<AppRoutes />, document.getElementById('app')!);
+render(
+  <Provider store={store}>
+    <AppRoutes />
+  </Provider>,
+  document.getElementById('app')!
+);

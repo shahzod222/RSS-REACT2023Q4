@@ -1,20 +1,16 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearch as setReduxSearch, selectSearch } from '../store';
 import { ErrorButton } from './errorbutton';
 import { useAppContext } from '../appContext';
 
 export function Search() {
-  let searchForLS = '';
-  const { search, setSearch, handleSearch } = useAppContext();
+  const dispatch = useDispatch();
+  const search: string = useSelector(selectSearch);
+  const { handleSearch } = useAppContext();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearch = event.target.value;
-    searchForLS = newSearch;
-    setSearch(newSearch);
-  };
-
-  const handleClick = () => {
-    localStorage.setItem('search', searchForLS);
-    handleSearch();
+    dispatch(setReduxSearch(event.target.value));
   };
 
   return (
@@ -28,12 +24,12 @@ export function Search() {
               placeholder="Search..."
               aria-label="Search"
               onChange={handleInputChange}
-              value={search || String(localStorage.getItem('search'))}
+              value={search}
               data-testid="search-input"
             />
             <button
               className="btn btn-outline-dark mx-3"
-              onClick={handleClick}
+              onClick={handleSearch}
               data-testid="search-button"
             >
               Search

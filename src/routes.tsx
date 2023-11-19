@@ -19,3 +19,4 @@ export function AppRoutes() {
     </Router>
   );
 }
+export { Routes };

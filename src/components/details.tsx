@@ -1,12 +1,26 @@
-import React from 'react';
+// In details.tsx
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDetailsPageLoading, selectDetails, setPictureId } from '../store';
 import { Card } from './card';
-import { useAppContext } from '../appContext';
 
 export function Details() {
-  const { handleClose, details } = useAppContext();
+  const dispatch = useDispatch();
+  const details = useSelector(selectDetails);
+
+  const handleClose = () => {
+    dispatch(setPictureId(null));
+  };
+
   const handleInnerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
+
+  useEffect(() => {
+    if (details !== null) {
+      dispatch(setDetailsPageLoading(true));
+    }
+  }, [details]);
 
   return (
     <div

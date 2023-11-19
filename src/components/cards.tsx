@@ -1,23 +1,20 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPictureId, selectData } from '../store';
 import { Card } from './card';
-import { useAppContext } from '../appContext';
 
 export const Cards = () => {
-  const { setPictureId, data } = useAppContext();
+  const dispatch = useDispatch();
+  const data = useSelector(selectData);
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const parentDiv = (e.target as HTMLElement).closest('.card');
-
-    if (parentDiv) {
-      const picId = parentDiv.id;
-      setPictureId(picId);
-    }
+  const handleClick = (id: string) => {
+    dispatch(setPictureId(id));
   };
 
   return (
     <div className="row row-cols-1 row-cols-md-3 g-3 my-4">
       {data.length !== 0 ? (
-        data.map((el) => <Card el={el} handleClick={handleClick} key={el.id} />)
+        data.map((el) => <Card key={el.id} el={el} handleClick={() => handleClick(el.id)} />)
       ) : (
         <h2>No data</h2>
       )}
