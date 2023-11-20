@@ -1,12 +1,13 @@
-// In details.tsx
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDetailsPageLoading, selectDetails, setPictureId } from '../store';
+import { selectDetails, setPictureId, selectDetailsPageLoading } from '../store';
 import { Card } from './card';
 
 export function Details() {
   const dispatch = useDispatch();
   const details = useSelector(selectDetails);
+  const isLoading = useSelector(selectDetailsPageLoading);
+  console.log(isLoading);
 
   const handleClose = () => {
     dispatch(setPictureId(null));
@@ -15,12 +16,6 @@ export function Details() {
   const handleInnerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
-
-  useEffect(() => {
-    if (details !== null) {
-      dispatch(setDetailsPageLoading(true));
-    }
-  }, [details]);
 
   return (
     <div
@@ -44,7 +39,7 @@ export function Details() {
         onClick={handleInnerClick}
         data-testid="inner-content"
       >
-        {details !== null ? (
+        {details !== null && !isLoading ? (
           <>
             <button onClick={handleClose} className="btn btn-outline-dark w-75">
               Close

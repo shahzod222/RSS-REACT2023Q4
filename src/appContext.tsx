@@ -63,6 +63,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const accessKey = 'wb6DTO5KrTRFyhIOh2iCJIjze5o_YbPM3Z7-Umd4myM';
     const apiUrl = `https://api.unsplash.com/photos/${id}`;
 
+    dispatch(setDetailsPageLoading(true));
+
     fetch(apiUrl, {
       headers: {
         Authorization: `Client-ID ${accessKey}`,
@@ -70,10 +72,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        dispatch(setDetailsPageLoading(true));
+        dispatch(setDetailsPageLoading(false));
         dispatch(setDetails(data));
       })
       .catch((error) => {
+        dispatch(setDetailsPageLoading(false));
         console.error('Error:', error);
       });
   };
