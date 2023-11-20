@@ -22,7 +22,6 @@ describe('Cards component', () => {
         },
         alt_description: 'Alt Description 2',
       },
-      // Add more test data as needed
     ];
 
     store.dispatch(setData(testData));
@@ -33,13 +32,11 @@ describe('Cards component', () => {
       </Provider>
     );
 
-    // Check if the cards are rendered
     const cardElements = screen.getAllByTestId('card');
     expect(cardElements.length).toBe(testData.length);
   });
 
   it('displays "No data" message when no cards are present', () => {
-    // Set the data in the store to an empty array
     store.dispatch(setData([]));
 
     render(
@@ -48,7 +45,6 @@ describe('Cards component', () => {
       </Provider>
     );
 
-    // Check if the "No data" message is displayed
     const noDataMessage = screen.getByText('No data');
     expect(noDataMessage).toBeInTheDocument();
   });

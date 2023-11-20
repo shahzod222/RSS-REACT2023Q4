@@ -1,9 +1,7 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
-  setSearch,
-  setPage,
   setPictureId,
   setMainPageLoading,
   setDetailsPageLoading,
@@ -18,7 +16,6 @@ import {
 export interface AppContextProps {
   getData: () => void;
   getPicture: (id: string | null) => void;
-  handleSearch: () => void;
   handleClose: () => void;
 }
 
@@ -27,7 +24,6 @@ const AppContext = createContext<AppContextProps | undefined>(undefined);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { pageNumber } = useParams();
   const search = useSelector(selectSearch);
   const page = useSelector(selectPage);
   const pictureId = useSelector(selectPictureId);
@@ -35,9 +31,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const getData = () => {
     const accessKey = 'wb6DTO5KrTRFyhIOh2iCJIjze5o_YbPM3Z7-Umd4myM';
-    const apiUrl = `https://api.unsplash.com/search/photos?page=${
-      pageNumber || page
-    }&per_page=${itemsPerPage}&query=${search || 'nature'}`;
+    const apiUrl = `https://api.unsplash.com/search/photos?page=${page}&per_page=${itemsPerPage}&query=${
+      search || 'nature'
+    }`;
 
     dispatch(setMainPageLoading(true));
 
@@ -81,26 +77,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       });
   };
 
-  const handleSearch = () => {
-    dispatch(setPage(1));
-    getData();
-  };
-
   const handleClose = () => {
     dispatch(setPictureId(null));
     navigate(`/page/${page}`);
   };
-
-  useEffect(() => {
-    dispatch(setSearch(localStorage.getItem('search') || ''));
-  }, [dispatch]);
 
   return (
     <AppContext.Provider
       value={{
         getData,
         getPicture,
-        handleSearch,
         handleClose,
       }}
     >

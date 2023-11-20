@@ -1,14 +1,40 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { setItemsPerPage, setPage } from '../store';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectSearch,
+  setData,
+  setMainPageLoading,
+  selectItemsPerPage,
+  selectPage,
+  setItemsPerPage,
+  setPage,
+} from '../store';
+import { api } from '../api';
 
 export function ItemsPerPage() {
   const dispatch = useDispatch();
 
+  const search: string = useSelector(selectSearch);
+  const itemsPerPage: number = useSelector(selectItemsPerPage);
+  const page: number = useSelector(selectPage);
+
+  const { data } = api.useGetDataQuery({
+    pageNumber: page,
+    itemsPerPage: itemsPerPage,
+    search: search,
+  });
+
+  useEffect(() => {
+    dispatch(setMainPageLoading(true));
+    if (data) {
+      dispatch(setData(data.results));
+      dispatch(setMainPageLoading(false));
+    }
+  }, [data]);
+
   const handleChange = (value: number) => {
     dispatch(setItemsPerPage(value));
     dispatch(setPage(1));
-    console.log(value);
   };
 
   return (

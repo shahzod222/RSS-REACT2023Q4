@@ -12,7 +12,7 @@ export const Cards = () => {
   };
 
   return (
-    <div className="row row-cols-1 row-cols-md-3 g-3 my-4">
+    <div className="row row-cols-1 row-cols-md-3 g-3 my-4" data-testid="cards">
       {data.length !== 0 ? (
         data.map((el) => <Card key={el.id} el={el} handleClick={() => handleClick(el.id)} />)
       ) : (

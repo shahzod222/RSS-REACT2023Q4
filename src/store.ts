@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { Picture } from './types';
+import { api } from './api';
 
 export const appSlice = createSlice({
   name: 'app',
@@ -80,5 +81,10 @@ export const selectViewMode = (state: { app: { viewMode: string } }) => state.ap
 export const store = configureStore({
   reducer: {
     app: appSlice.reducer,
+    [api.reducerPath]: api.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware),
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
