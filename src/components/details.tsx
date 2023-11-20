@@ -1,20 +1,21 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectDetails, setPictureId, selectDetailsPageLoading } from '../store';
+import { selectDetails, setPictureId, selectDetailsPageLoading, setDetails } from '../store';
 import { Card } from './card';
 
 export function Details() {
   const dispatch = useDispatch();
   const details = useSelector(selectDetails);
   const isLoading = useSelector(selectDetailsPageLoading);
-  console.log(isLoading);
 
   const handleClose = () => {
     dispatch(setPictureId(null));
+    dispatch(setDetails(null));
   };
 
   const handleInnerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    handleClose();
   };
 
   return (
