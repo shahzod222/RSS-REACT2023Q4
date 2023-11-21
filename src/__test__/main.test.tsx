@@ -11,7 +11,5 @@ test('renders AppRoutes without errors', () => {
     </Provider>
   );
 
-  // You can add more specific assertions based on your routes and components
   expect(screen.getByText('Loading...')).toBeInTheDocument();
-  // Add more assertions as needed
 });

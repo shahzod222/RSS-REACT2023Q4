@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { AppProvider } from '../appContext';
 import { Pagination } from '../components/pagination';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -32,9 +31,7 @@ describe('Pagination component', () => {
     render(
       <Router>
         <Provider store={store}>
-          <AppProvider>
-            <Pagination />
-          </AppProvider>
+          <Pagination />
         </Provider>
       </Router>
     );

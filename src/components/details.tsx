@@ -1,16 +1,26 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectDetails, setPictureId, selectDetailsPageLoading, setDetails } from '../store';
+import {
+  selectDetails,
+  setPictureId,
+  selectDetailsPageLoading,
+  setDetails,
+  selectPage,
+} from '../store';
 import { Card } from './card';
+import { useNavigate } from 'react-router-dom';
 
 export function Details() {
   const dispatch = useDispatch();
   const details = useSelector(selectDetails);
   const isLoading = useSelector(selectDetailsPageLoading);
+  const navigate = useNavigate();
+  const page = useSelector(selectPage);
 
   const handleClose = () => {
     dispatch(setPictureId(null));
     dispatch(setDetails(null));
+    navigate(`/page/${page}`);
   };
 
   const handleInnerClick = (e: React.MouseEvent<HTMLDivElement>) => {

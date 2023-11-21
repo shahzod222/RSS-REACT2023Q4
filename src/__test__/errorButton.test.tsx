@@ -1,5 +1,4 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-import { AppProvider } from '../appContext';
 import '@testing-library/jest-dom/extend-expect';
 import { ErrorButton } from '../components/errorbutton';
 import { fireEvent, render, screen } from '@testing-library/react';
@@ -11,9 +10,7 @@ describe('ErrorButton component', () => {
     render(
       <Router>
         <Provider store={store}>
-          <AppProvider>
-            <ErrorButton />
-          </AppProvider>
+          <ErrorButton />
         </Provider>
       </Router>
     );

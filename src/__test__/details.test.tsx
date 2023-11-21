@@ -4,15 +4,18 @@ import { Provider } from 'react-redux';
 import { store, setDetails } from '../store';
 import { Details } from '../components/details';
 import '@testing-library/jest-dom/extend-expect';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 describe('Details component', () => {
   it('displays loading indicator while fetching data', () => {
     store.dispatch(setDetails(null));
 
     render(
-      <Provider store={store}>
-        <Details />
-      </Provider>
+      <Router>
+        <Provider store={store}>
+          <Details />
+        </Provider>
+      </Router>
     );
 
     const loadingMessage = screen.getByText('Loading...');
@@ -31,9 +34,11 @@ describe('Details component', () => {
     store.dispatch(setDetails(testData));
 
     render(
-      <Provider store={store}>
-        <Details />
-      </Provider>
+      <Router>
+        <Provider store={store}>
+          <Details />
+        </Provider>
+      </Router>
     );
 
     await waitFor(() => {
@@ -57,9 +62,11 @@ describe('Details component', () => {
     store.dispatch(setDetails(testData));
 
     render(
-      <Provider store={store}>
-        <Details />
-      </Provider>
+      <Router>
+        <Provider store={store}>
+          <Details />
+        </Provider>
+      </Router>
     );
 
     const detailedCard = screen.getByTestId('card');

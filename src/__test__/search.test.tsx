@@ -4,7 +4,6 @@ import { Search } from '../components/search';
 import { Provider } from 'react-redux';
 import { store } from '../store';
 import '@testing-library/jest-dom/extend-expect';
-import { AppProvider } from '../appContext';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 describe('Search component', () => {
@@ -14,9 +13,7 @@ describe('Search component', () => {
     render(
       <Router>
         <Provider store={store}>
-          <AppProvider>
-            <Search />
-          </AppProvider>
+          <Search />
         </Provider>
       </Router>
     );

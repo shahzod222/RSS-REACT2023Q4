@@ -1,23 +1,49 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectPage, selectPictureId, setPage, selectMainPageLoading } from './store';
+import {
+  selectPage,
+  selectPictureId,
+  setPage,
+  selectMainPageLoading,
+  selectItemsPerPage,
+  selectSearch,
+  setMainPageLoading,
+  setData,
+  setDetailsPageLoading,
+  setDetails,
+} from './store';
 import { ErrorBoundary } from './errorboundary';
 import { Details } from './components/details';
 import { Pagination } from './components/pagination';
 import { ItemsPerPage } from './components/itemPerPage';
 import { Cards } from './components/cards';
 import { Search } from './components/search';
-import { useAppContext } from './appContext';
+import { api } from './api';
 
 export function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pageNumber } = useParams();
   const page = useSelector(selectPage);
+  const itemsPerPage = useSelector(selectItemsPerPage);
+  const search = useSelector(selectSearch);
   const pictureId = useSelector(selectPictureId);
-  const { getPicture } = useAppContext();
   const isLoading = useSelector(selectMainPageLoading);
+
+  const { data } = api.useGetDataQuery({
+    pageNumber: page,
+    itemsPerPage: itemsPerPage,
+    search: search || 'nature',
+  });
+
+  useEffect(() => {
+    dispatch(setMainPageLoading(true));
+    if (data) {
+      dispatch(setData(data.results));
+      dispatch(setMainPageLoading(false));
+    }
+  }, [search, itemsPerPage, data]);
 
   useEffect(() => {
     if (pageNumber) {
@@ -26,12 +52,16 @@ export function App() {
     }
   }, [pageNumber, dispatch]);
 
+  const { data: dataDetails } = api.useGetPictureQuery({ id: pictureId });
+
   useEffect(() => {
-    if (pictureId) {
+    dispatch(setDetailsPageLoading(true));
+    if (dataDetails && pictureId) {
       navigate(`/page/${page}/details/${pictureId}`);
-      getPicture(pictureId);
+      dispatch(setDetails(dataDetails));
+      dispatch(setDetailsPageLoading(false));
     }
-  }, [pictureId]);
+  }, [pictureId, dataDetails]);
 
   return (
     <ErrorBoundary>
