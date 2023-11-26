@@ -4,6 +4,7 @@ import { ErrorButton } from '../components/errorbutton';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from '../store';
+import React from 'react';
 
 describe('ErrorButton component', () => {
   it('throws an error when the button is clicked', () => {

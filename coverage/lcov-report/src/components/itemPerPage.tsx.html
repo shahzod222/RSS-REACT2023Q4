@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/11</span>
+                <span class='fraction'>4/12</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/11</span>
+                <span class='fraction'>4/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -89,18 +89,18 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -119,23 +119,23 @@
 import { useDispatch } from 'react-redux';
 import { setItemsPerPage, setPage } from '../store';
 &nbsp;
-export function ItemsPerPage() {
-  const dispatch = useDispatch();
-  const handleChange = <span class="fstat-no" title="function not covered" >(v</span>alue: number) =&gt; {
+export function <span class="fstat-no" title="function not covered" >ItemsPerPage(</span>) {
+  const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
+  const handleChange = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(v</span>alue: number) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    dispatch(setItemsPerPage(value));</span>
 <span class="cstat-no" title="statement not covered" >    dispatch(setPage(1));</span>
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div className="container d-flex justify-content-center"&gt;
       &lt;h3&gt;Items per page: &lt;/h3&gt;
-      &lt;button className="btn btn-outline-dark px-4 mx-2" onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleChange(10)}</span>&gt;
+      &lt;button className="btn btn-outline-dark px-4 mx-2" onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleChange(10)}&gt;</span>
         10
       &lt;/button&gt;
-      &lt;button className="btn btn-outline-dark px-4 mx-2" onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleChange(15)}</span>&gt;
+      &lt;button className="btn btn-outline-dark px-4 mx-2" onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleChange(15)}&gt;</span>
         15
       &lt;/button&gt;
-      &lt;button className="btn btn-outline-dark px-4 mx-2" onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleChange(20)}</span>&gt;
+      &lt;button className="btn btn-outline-dark px-4 mx-2" onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleChange(20)}&gt;</span>
         20
       &lt;/button&gt;
     &lt;/div&gt;
@@ -148,7 +148,7 @@ export function ItemsPerPage() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-21T09:05:43.665Z
+                at 2023-11-26T14:46:13.966Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

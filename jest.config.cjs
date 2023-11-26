@@ -1,8 +1,7 @@
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'jest-environment-jsdom',
-  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
+  testEnvironment: 'jsdom',
   moduleNameMapper: {
-    '^node-fetch$': '<rootDir>/node_modules/node-fetch',
+    '^next/router$': '<rootDir>/node_modules/next/dist/client/router.js',
   },
 };

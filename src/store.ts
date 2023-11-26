@@ -6,7 +6,7 @@ import { api } from './api';
 export const appSlice = createSlice({
   name: 'app',
   initialState: {
-    search: localStorage.getItem('search') || '',
+    search: typeof localStorage !== 'undefined' ? localStorage.getItem('search') : '',
     data: [],
     page: 1,
     details: null,

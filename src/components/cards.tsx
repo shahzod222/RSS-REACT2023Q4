@@ -1,14 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPictureId, selectData } from '../store';
+import { setPictureId, selectData, selectPage } from '../store';
 import { Card } from './card';
+import router from 'next/router';
 
 export const Cards = () => {
   const dispatch = useDispatch();
   const data = useSelector(selectData);
+  const page = useSelector(selectPage);
 
   const handleClick = (id: string) => {
     dispatch(setPictureId(id));
+    router.push(`/page/${page}/details/${id}`);
   };
 
   return (

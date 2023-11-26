@@ -33,7 +33,7 @@ export function Search() {
               placeholder="Search..."
               aria-label="Search"
               onChange={handleInputChange}
-              value={search || String(localStorage.getItem('search'))}
+              value={search}
               data-testid="search-input"
             />
             <button

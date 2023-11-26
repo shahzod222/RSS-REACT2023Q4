@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import React from 'react';
 
 export function ErrorButton() {
   const [hasError, setHasError] = useState(false);
